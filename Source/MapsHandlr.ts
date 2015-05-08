@@ -40,67 +40,67 @@ interface IMapsHandlrSettings {
  * 
  * @author "Josh Goldberg" <josh@fullscreenmario.com>
  */
-class MapsHandlr {        
-    // MapsCreatr container for Maps from which this obtains Thing settings.
-    private MapsCreator: MapsCreatr;
-        
-    // MapScreenr container for attributes copied from Areas.
-    private MapScreener: MapScreenr;
-        
-    // An Array of Strings representing the names of attributes to be copied
-    // to the MapScreener during this.setLocation.
-    private screenAttributes: string[];
-        
-    // The currently referenced Map from MapsCreator, set by this.setMap.
-    private mapCurrent: IMapsCreatrMap;
-        
-    // The currently referenced Area, set by this.setLocation.
-    private areaCurrent: IMapsCreatrArea;
-        
-    // The currently referenced Location, set by this.setLocation.
-    private locationCurrent: IMapsCreatrLocation;
-        
-    // The name of the currently edited Map, set by this.setMap.
-    private mapName: string;
-        
-    // The current area's listing of PreThings that are to be added in order
-    // during this.spawnMap.
-    private prethings: any;
-        
-    // When a prething is to be spawned, this Function should spawn it.
-    private onSpawn: (prething: PreThing) => void;
-        
-    // When a prething is to be unspawned, this Function should unspawn it.
-    private onUnspawn: (prething: PreThing) => void;
-        
-    // Optionally, an Array of Thing titles to stretch across the map.
-    private stretches: IPreThingSettings[];
-        
-    // If stretches exists, the Function to call to add one to the map.
-    private stretchAdd: (title: string, index: number) => void;
-        
-    // Optionally, an Array of Things to place at the end of the map.
-    private afters: IPreThingSettings[];
-        
-    // If afters exists, the Function to call to add one to the map.
-    private afterAdd: (title: string, index: number) => void;
-        
+class MapsHandlr {
     // Directional equivalents for converting from directions to keys
-    private static directionKeys: any = {
+    public static directionKeys: any = {
         "xInc": "left",
         "xDec": "right",
         "yInc": "top",
         "yDec": "bottom"
     };
-        
+
     // Opposite directions for when finding descending order Arrays
-    private static directionOpposites: any = {
+    public static directionOpposites: any = {
         "xInc": "xDec",
         "xDec": "xInc",
         "yInc": "yDec",
         "yDec": "yInc"
     };
-    
+
+    // MapsCreatr container for Maps from which this obtains Thing settings.
+    private MapsCreator: MapsCreatr;
+
+    // MapScreenr container for attributes copied from Areas.
+    private MapScreener: MapScreenr;
+
+    // An Array of Strings representing the names of attributes to be copied
+    // to the MapScreener during this.setLocation.
+    private screenAttributes: string[];
+
+    // The currently referenced Map from MapsCreator, set by this.setMap.
+    private mapCurrent: IMapsCreatrMap;
+
+    // The currently referenced Area, set by this.setLocation.
+    private areaCurrent: IMapsCreatrArea;
+
+    // The currently referenced Location, set by this.setLocation.
+    private locationCurrent: IMapsCreatrLocation;
+
+    // The name of the currently edited Map, set by this.setMap.
+    private mapName: string;
+
+    // The current area's listing of PreThings that are to be added in order
+    // during this.spawnMap.
+    private prethings: any;
+
+    // When a prething is to be spawned, this Function should spawn it.
+    private onSpawn: (prething: PreThing) => void;
+
+    // When a prething is to be unspawned, this Function should unspawn it.
+    private onUnspawn: (prething: PreThing) => void;
+
+    // Optionally, an Array of Thing titles to stretch across the map.
+    private stretches: IPreThingSettings[];
+
+    // If stretches exists, the Function to call to add one to the map.
+    private stretchAdd: (title: string, index: number) => void;
+
+    // Optionally, an Array of Things to place at the end of the map.
+    private afters: IPreThingSettings[];
+
+    // If afters exists, the Function to call to add one to the map.
+    private afterAdd: (title: string, index: number) => void;
+
     /**
      * @param {IMapsHandlrSettings} settings
      */
@@ -114,7 +114,7 @@ class MapsHandlr {
             throw new Error("No MapsCreator provided to MapsHandlr.");
         }
         this.MapsCreator = settings.MapsCreator;
-        
+
         // Map/Area attributes will need to be stored in a MapScreenr object
         if (!settings.MapScreener) {
             throw new Error("No MapScreener provided to MapsHandlr.");
@@ -128,39 +128,39 @@ class MapsHandlr {
         this.stretchAdd = settings.stretchAdd;
         this.afterAdd = settings.afterAdd;
     }
-    
-    
+
+
     /* Simple gets
     */
-    
+
     /**
      * @return {MapsCreatr}   The internal MapsCreator.
      */
     getMapsCreator(): MapsCreatr {
         return this.MapsCreator;
     }
-    
+
     /**
      * @return {MapScreenr}   The internal MapScreener.
      */
     getMapScreener(): MapScreenr {
         return this.MapScreener;
     }
-    
+
     /**
      * @return {String[]}   The attribute names to be copied to MapScreener.
      */
     getScreenAttributes(): string[] {
         return this.screenAttributes;
     }
-    
+
     /**
      * @return {String}   The key by which the current Map is indexed.
      */
     getMapName(): string {
         return this.mapName;
     }
-    
+
     /** 
      * Gets the map listed under the given name. If no name is provided, the
      * mapCurrent is returned instead.
@@ -175,7 +175,7 @@ class MapsHandlr {
             return this.mapCurrent;
         }
     }
-    
+
     /**
      * Simple getter pipe to the internal MapsCreator.getMaps() function.
      * 
@@ -198,7 +198,7 @@ class MapsHandlr {
     getAreaName(): string {
         return this.areaCurrent.name;
     }
-    
+
     /**
      * @param {String} location   The key of the Location to return.
      * @return {Location} A Location within the current Map.
@@ -206,7 +206,7 @@ class MapsHandlr {
     getLocation(location: string): IMapsCreatrLocation {
         return this.areaCurrent.map.locations[location];
     }
-    
+
     /**
      * Simple getter function for the internal prethings object. This will be
      * undefined before the first call to setMap.
@@ -216,11 +216,11 @@ class MapsHandlr {
     getPreThings(): any {
         return this.prethings;
     }
-    
-    
+
+
     /* Map / location setting
     */
-    
+
     /**
      * Sets the currently manipulated Map in the handler to be the one under a
      * given name. Note that this will do very little unless a location is 
@@ -239,7 +239,7 @@ class MapsHandlr {
         }
 
         this.mapName = name;
-        
+
         // Most of the work is done by setLocation (by default, the map's first)
         if (arguments.length > 1) {
             this.setLocation(location);
@@ -247,7 +247,7 @@ class MapsHandlr {
 
         return this.mapCurrent;
     }
-    
+
     /**
      * Goes to a particular location in the given map. Area attributes are 
      * copied to the MapScreener, PreThings are loaded, and stretches and afters
@@ -255,7 +255,7 @@ class MapsHandlr {
      * 
      * @param {String} name   The key of the Location to start in.
      */
-    setLocation(name: string) {
+    setLocation(name: string): void {
         var location: IMapsCreatrLocation,
             attribute: string,
             i: number;
@@ -265,7 +265,7 @@ class MapsHandlr {
         if (!location) {
             throw new Error("Unknown location in setLocation: '" + name + "'.");
         }
-        
+
         // Since the location is valid, mark it as current (with its area)
         this.locationCurrent = location;
         this.areaCurrent = location.area;
@@ -274,8 +274,8 @@ class MapsHandlr {
             "right": 0,
             "bottom": 0,
             "left": 0
-        }
-        
+        };
+
         // Copy all the settings from that area into the MapScreenr container
         for (i = 0; i < this.screenAttributes.length; i += 1) {
             attribute = this.screenAttributes[i];
@@ -285,14 +285,14 @@ class MapsHandlr {
         // Reset the prethings object, enabling it to be used as a fresh start
         // for the new Area/Location placements
         this.prethings = this.MapsCreator.getPreThings(location.area);
-        
+
         // Optional: set stretch commands
         if (this.areaCurrent.stretches) {
             this.setStretches(this.areaCurrent.stretches);
         } else {
             this.stretches = undefined;
         }
-        
+
         // Optional: set after commands
         if (this.areaCurrent.afters) {
             this.setAfters(this.areaCurrent.afters);
@@ -300,7 +300,7 @@ class MapsHandlr {
             this.afters = undefined;
         }
     }
-    
+
     /**
      * Applies the stretchAdd Function to each given "stretch" command and  
      * stores the commands in stretches.
@@ -311,7 +311,7 @@ class MapsHandlr {
         this.stretches = stretchesRaw;
         this.stretches.forEach(this.stretchAdd);
     }
-    
+
     /**
      * Applies the afterAdd Function to each given "after" command and stores
      * the commands in afters.
@@ -322,7 +322,7 @@ class MapsHandlr {
         this.afters = aftersRaw;
         this.afters.forEach(this.afterAdd);
     }
-    
+
     /**
      * Calls onSpawn on every PreThing touched by the given bounding box, 
      * determined in order of the given direction. This is a simple wrapper 
@@ -340,7 +340,7 @@ class MapsHandlr {
             this.applySpawnAction(this.onSpawn, true, direction, top, right, bottom, left);
         }
     }
-    
+
     /**
      * Calls onUnspawn on every PreThing touched by the given bounding box,
      * determined in order of the given direction. This is a simple wrapper
@@ -353,12 +353,12 @@ class MapsHandlr {
      * @param {Number} bottom    The bottom-most bound to spawn within.
      * @param {Number} left    The left-most bound to spawn within.
      */
-    unspawnMap = function (direction: string, top: number, right: number, bottom: number, left: number): void {
+    unspawnMap(direction: string, top: number, right: number, bottom: number, left: number): void {
         if (this.onUnspawn) {
             this.applySpawnAction(this.onUnspawn, false, direction, top, right, bottom, left);
         }
     }
-    
+
     /**
      * Calls onUnspawn on every PreThing touched by the given bounding box,
      * determined in order of the given direction. This is used both to spawn
@@ -366,7 +366,7 @@ class MapsHandlr {
      * status is used as a filter: all PreThings that already have the status
      * (generally true or false as spawned or unspawned, respectively) will have
      * the callback called on them.
-     *
+     * 
      * @param {Function} callback   The callback to be run whenever a matching
      *                              matching PreThing is found.
      * @param {Boolean} status   The spawn status to match PreThings against.
@@ -391,7 +391,7 @@ class MapsHandlr {
         right: number,
         bottom: number,
         left: number
-        ) {
+        ): void {
         var name: string,
             group: PreThing[],
             prething: PreThing,
@@ -399,13 +399,13 @@ class MapsHandlr {
             start: number,
             end: number,
             i: number;
-        
+
         // For each group of PreThings currently able to spawn...
         for (name in this.prethings) {
             if (!this.prethings.hasOwnProperty(name)) {
                 continue;
             }
-            
+
             // Don't bother trying to spawn the group if it has no members
             group = this.prethings[name][direction];
             if (group.length === 0) {
@@ -417,12 +417,12 @@ class MapsHandlr {
             mid = (group.length / 2) | 0;
             start = this.findPreThingsSpawnStart(direction, group, mid, top, right, bottom, left);
             end = this.findPreThingsSpawnEnd(direction, group, mid, top, right, bottom, left);
-            
+
             // Loop through all the directionally valid PreThings, spawning if 
             // they're within the bounding box
             for (i = start; i <= end; i += 1) {
                 prething = group[i];
-                
+
                 // For example: if status is true (spawned), don't spawn again
                 if (prething.spawned !== status) {
                     prething.spawned = status;
@@ -431,7 +431,7 @@ class MapsHandlr {
             }
         }
     }
-    
+
     /**
      * Finds the index from which PreThings should stop having an action 
      * applied to them in applySpawnAction. This is less efficient than the 
@@ -447,7 +447,15 @@ class MapsHandlr {
      * @param {Number} left    The left-most bound to apply within.
      * @return {Number}
      */
-    private findPreThingsSpawnStart(direction: string, group: PreThing[], mid: number, top: number, right: number, bottom: number, left: number): number {
+    private findPreThingsSpawnStart(
+        direction: string,
+        group: PreThing[],
+        mid: number,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+        ): number {
         var directionKey: string = MapsHandlr.directionKeys[direction],
             directionEnd: number = this.getDirectionEnd(directionKey, top, right, bottom, left),
             i: number;
@@ -460,7 +468,7 @@ class MapsHandlr {
 
         return i;
     }
-    
+
     /**
      * Finds the index from which PreThings should stop having an action 
      * applied to them in applySpawnAction. This is less efficient than the 
@@ -476,7 +484,15 @@ class MapsHandlr {
      * @param {Number} left    The left-most bound to apply within.
      * @return {Number}
      */
-    private findPreThingsSpawnEnd(direction: string, group: PreThing[], mid: number, top: number, right: number, bottom: number, left: number): number {
+    private findPreThingsSpawnEnd(
+        direction: string,
+        group: PreThing[],
+        mid: number,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+        ): number {
         var directionKey: string = MapsHandlr.directionKeys[direction],
             directionKeyOpposite: string = MapsHandlr.directionKeys[MapsHandlr.directionOpposites[direction]],
             directionEnd: number = this.getDirectionEnd(directionKeyOpposite, top, right, bottom, left),
@@ -490,7 +506,7 @@ class MapsHandlr {
 
         return i;
     }
-    
+
     /**
      * Conditionally returns a measurement based on what direction String is
      * given. This is useful for generically finding boundaries when the 
@@ -514,6 +530,8 @@ class MapsHandlr {
                 return bottom;
             case "left":
                 return left;
+            default:
+                throw new Error("Unknown directionKey: " + directionKey);
         }
     }
 }
