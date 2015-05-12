@@ -390,8 +390,7 @@ class MapsHandlr {
         top: number,
         right: number,
         bottom: number,
-        left: number
-        ): void {
+        left: number): void {
         var name: string,
             group: PreThing[],
             prething: PreThing,
@@ -454,8 +453,7 @@ class MapsHandlr {
         top: number,
         right: number,
         bottom: number,
-        left: number
-        ): number {
+        left: number): number {
         var directionKey: string = MapsHandlr.directionKeys[direction],
             directionEnd: number = this.getDirectionEnd(directionKey, top, right, bottom, left),
             i: number;
@@ -491,8 +489,7 @@ class MapsHandlr {
         top: number,
         right: number,
         bottom: number,
-        left: number
-        ): number {
+        left: number): number {
         var directionKey: string = MapsHandlr.directionKeys[direction],
             directionKeyOpposite: string = MapsHandlr.directionKeys[MapsHandlr.directionOpposites[direction]],
             directionEnd: number = this.getDirectionEnd(directionKeyOpposite, top, right, bottom, left),
